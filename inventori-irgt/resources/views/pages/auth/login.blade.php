@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk — IRGT Inventory System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0c1a2e 0%, #0c4a6e 50%, #0c1a2e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: -120px; left: -120px;
+            width: 480px; height: 480px;
+            background: radial-gradient(circle, rgba(14,165,233,0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 6s ease-in-out infinite alternate;
+        }
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: -100px; right: -100px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(3,105,161,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 8s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.12); } }
+
+        .card {
+            background: #fff;
+            border-radius: 22px;
+            padding: 40px 36px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .card-header { text-align: center; margin-bottom: 32px; }
+        .logo-box {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, #0ea5e9, #0369a1);
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            box-shadow: 0 8px 24px rgba(3,105,161,0.4);
+        }
+        .logo-box svg { color: #fff; }
+        .badge-brand {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0c4a6e;
+            font-size: 10.5px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+        }
+        h1 { font-size: 24px; font-weight: 800; color: #0c1a2e; margin-bottom: 6px; letter-spacing: -0.02em; }
+        .subtitle { font-size: 13.5px; color: #64748b; }
+
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px; }
+        .input-wrap { position: relative; }
+        .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
+        input[type="email"], input[type="password"], input[type="text"] {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 11px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #0c1a2e;
+            background: #f8fafc;
+            transition: all 0.15s;
+            outline: none;
+        }
+        input:focus {
+            border-color: #0369a1;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(3,105,161,0.12);
+        }
+        .pw-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #94a3b8; padding: 4px; transition: color 0.15s; }
+        .pw-toggle:hover { color: #0369a1; }
+
+        .row-opts { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .remember { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .remember input { accent-color: #0369a1; width: 15px; height: 15px; cursor: pointer; }
+        .remember span { font-size: 13px; color: #475569; font-weight: 500; }
+        .forgot { font-size: 13px; color: #0369a1; font-weight: 600; text-decoration: none; }
+        .forgot:hover { color: #075985; text-decoration: underline; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #0369a1, #075985);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(3,105,161,0.35);
+            transition: all 0.15s;
+            letter-spacing: 0.01em;
+            margin-bottom: 20px;
+        }
+        .btn-submit:hover { background: linear-gradient(135deg, #0ea5e9, #0369a1); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(3,105,161,0.45); }
+        .btn-submit:active { transform: translateY(0); }
+
+        .card-footer { text-align: center; padding-top: 20px; border-top: 1.5px solid #f0f9ff; }
+        .card-footer a { font-size: 13px; color: #0369a1; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+        .card-footer a:hover { color: #075985; }
+
+        .alert-error { background: #fee2e2; border: 1.5px solid #fca5a5; border-radius: 10px; padding: 12px 14px; margin-bottom: 20px; }
+        .alert-error ul { list-style: none; }
+        .alert-error li { font-size: 13px; color: #b91c1c; font-weight: 500; }
+        .alert-status { background: #dcfce7; border: 1.5px solid #86efac; border-radius: 10px; padding: 12px 14px; margin-bottom: 20px; font-size: 13px; color: #15803d; font-weight: 500; }
+
+        .site-footer { margin-top: 20px; font-size: 11.5px; color: rgba(148,163,184,0.7); text-align: center; position: relative; z-index: 1; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="card-header">
+        <div class="logo-box">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        </div>
+        <div class="badge-brand">IRGT INVENTORY SYSTEM</div>
+        <h1>Selamat Datang</h1>
+        <p class="subtitle">Masuk untuk mengelola inventaris aset sekolah</p>
+    </div>
+
+    @if(session('status'))
+    <div class="alert-status">{{ session('status') }}</div>
+    @endif
+
+    @if($errors->any())
+    <div class="alert-error">
+        <ul>
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
+
+        <div class="form-group">
+            <label for="email">Alamat Email</label>
+            <div class="input-wrap">
+                <span class="input-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </span>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="{{ old('email') }}"
+                    placeholder="nama@irgtschool.id"
+                    autocomplete="username"
+                    required
+                    autofocus
+                >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+                <span class="input-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </span>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    autocomplete="current-password"
+                    required
+                >
+                <button type="button" class="pw-toggle" onclick="togglePw()" id="pw-toggle-btn" title="Tampilkan / sembunyikan password">
+                    <svg id="pw-show-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <svg id="pw-hide-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="row-opts">
+            <label class="remember">
+                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                <span>Ingat saya</span>
+            </label>
+            @if(Route::has('password.request'))
+            <a href="{{ route('password.request') }}" class="forgot">Lupa password?</a>
+            @endif
+        </div>
+
+        <button type="submit" class="btn-submit">Masuk ke Sistem</button>
+
+        <div class="card-footer">
+            <div style="margin-bottom: 12px; font-size: 13.5px; color: #64748b;">
+                Belum memiliki akun? <a href="{{ route('register') }}" style="color: #0369a1; font-weight: 700; text-decoration: none;">Daftar di sini</a>
+            </div>
+            <a href="{{ route('public.assets.index') }}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Lihat Status Inventaris Publik
+            </a>
+        </div>
+    </form>
+</div>
+
+<div class="site-footer">
+    &copy; {{ date('Y') }} IRGT School. All rights reserved.
+</div>
+
+<script>
+function togglePw() {
+    const pw = document.getElementById('password');
+    const showIcon = document.getElementById('pw-show-icon');
+    const hideIcon = document.getElementById('pw-hide-icon');
+    if (pw.type === 'password') {
+        pw.type = 'text';
+        showIcon.style.display = 'none';
+        hideIcon.style.display = 'block';
+    } else {
+        pw.type = 'password';
+        showIcon.style.display = 'block';
+        hideIcon.style.display = 'none';
+    }
+}
+</script>
+
+</body>
+</html>

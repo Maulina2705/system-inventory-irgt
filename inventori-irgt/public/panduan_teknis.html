@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi Teknis & Arsitektur Sistem — IRGT Inventory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 16mm 14mm 16mm 14mm;
+            @bottom-right {
+                content: "Halaman " counter(page);
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 8pt;
+                color: #64748b;
+            }
+            @bottom-left {
+                content: "IRGT School — Technical Architecture & Developer Reference (v1.0)";
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 8pt;
+                color: #64748b;
+            }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1e293b;
+            background: #f1f5f9;
+            line-height: 1.65;
+            font-size: 13px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .print-btn-bar {
+            background: #09121f;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            border-bottom: 1px solid #1e293b;
+        }
+        .print-btn-bar .title { color: #f8fafc; font-weight: 700; font-size: 13.5px; display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; }
+        .btn-print-doc {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 7px;
+            font-weight: 700;
+            font-size: 12.5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            box-shadow: 0 2px 8px rgba(2,132,199,0.4);
+            transition: all 0.15s;
+        }
+        .btn-print-doc:hover { background: #0369a1; transform: translateY(-1px); }
+
+        .doc-container {
+            max-width: 900px;
+            margin: 24px auto 60px;
+            background: #ffffff;
+            padding: 44px 50px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* COVER */
+        .cover {
+            border-bottom: 2px solid #0284c7;
+            padding-bottom: 24px;
+            margin-bottom: 30px;
+        }
+        .cover-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #0284c7;
+            background: #e0f2fe;
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+        .cover h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .cover-desc {
+            font-size: 13.5px;
+            color: #475569;
+            margin-bottom: 16px;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            color: #475569;
+        }
+        .meta-grid strong { color: #0f172a; display: block; font-size: 11.5px; }
+
+        /* HEADINGS */
+        h2 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 32px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            page-break-after: avoid;
+        }
+        h2 .sec-num {
+            background: #0284c7;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 2px 7px;
+            border-radius: 5px;
+        }
+        h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0369a1;
+            margin: 20px 0 8px;
+            page-break-after: avoid;
+        }
+        h4 {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 12px 0 4px;
+        }
+        p { margin-bottom: 10px; color: #334155; }
+        ul, ol { margin-left: 18px; margin-bottom: 12px; color: #334155; }
+        li { margin-bottom: 5px; }
+
+        /* CODE & BLOCKS */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            background: #f1f5f9;
+            color: #0369a1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        pre {
+            background: #0b1320;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1.5;
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin: 10px 0 14px;
+            overflow-x: auto;
+            border: 1px solid #1e293b;
+            page-break-inside: avoid;
+        }
+        pre .comment { color: #64748b; font-style: italic; }
+        pre .keyword { color: #38bdf8; font-weight: 700; }
+        pre .string { color: #4ade80; }
+        pre .var { color: #fde047; }
+        pre .type { color: #fb923c; }
+
+        /* TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 16px;
+            font-size: 11.5px;
+            page-break-inside: avoid;
+        }
+        th, td {
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #f1f5f9;
+            color: #0f172a;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+        }
+        tr:nth-child(even) { background: #f8fafc; }
+
+        /* CALLOUTS */
+        .callout {
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin: 12px 0;
+            font-size: 12px;
+            line-height: 1.55;
+            border-left: 3.5px solid;
+            page-break-inside: avoid;
+        }
+        .callout-info { background: #f0f9ff; border-color: #0284c7; color: #0369a1; }
+        .callout-warning { background: #fffbeb; border-color: #f59e0b; color: #b45309; }
+        .callout-success { background: #f0fdf4; border-color: #16a34a; color: #15803d; }
+        .callout-danger { background: #fef2f2; border-color: #dc2626; color: #991b1b; }
+
+        .badge-method {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .m-get { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .m-post { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+        .m-patch { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .m-delete { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+        .page-break { page-break-before: always; }
+
+        @media print {
+            body { background: #fff; font-size: 10pt; line-height: 1.45; }
+            .print-btn-bar { display: none; }
+            .doc-container { box-shadow: none; border: none; padding: 0; margin: 0; max-width: 100%; }
+            h2 { margin-top: 22px; }
+            pre { font-size: 9.5pt; padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="print-btn-bar">
+    <div class="title">
+        <span>[TECH-DOC]</span> IRGT Inventory System — Developer Reference Manual
+    </div>
+    <button class="btn-print-doc" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Cetak / Save as PDF
+    </button>
+</div>
+
+<div class="doc-container">
+
+    <!-- COVER HEADER -->
+    <div class="cover">
+        <span class="cover-tag">TECHNICAL ARCHITECTURE SPECIFICATION</span>
+        <h1>DOKUMENTASI TEKNIS & ARSITEKTUR SISTEM<br>IRGT INVENTORY SYSTEM</h1>
+        <p class="cover-desc">Spesifikasi komprehensif bagi Software Engineer: Struktur Basis Data, Middleware RBAC, Pipeline Pemrosesan Gambar (GD), Protokol Keamanan Server, dan Alur Kerja State Machine.</p>
+        
+        <div class="meta-grid">
+            <div>Stack: <strong>Laravel 11+ / PHP 8.4+</strong></div>
+            <div>RDBMS: <strong>MySQL 8.0 (InnoDB)</strong></div>
+            <div>Auth: <strong>Fortify RBAC Custom</strong></div>
+            <div>Environment: <strong>Production Ready</strong></div>
+        </div>
+    </div>
+
+    <!-- SEKSI 1: TEKNOLOGI & ARSITEKTUR -->
+    <h2><span class="sec-num">01</span> Arsitektur Sistem & Stack Teknologi</h2>
+    <p>Aplikasi dibangun dengan arsitektur Monolitik Terstruktur berbasis <strong>Laravel Framework</strong>, menerapkan prinsip <em>Server-Side Rendering (SSR)</em> via Blade Templates tanpa ketergantungan JavaScript framework yang berat untuk memaksimalkan kecepatan render, stabilitas koneksi, dan kemudahan deployment di shared-hosting cPanel maupun VPS.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:25%;">Komponen</th>
+                <th style="width:35%;">Teknologi / Library</th>
+                <th style="width:40%;">Deskripsi & Peran Arsitektural</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Backend Framework</strong></td>
+                <td>Laravel 11.x/12.x/13.x (PHP 8.4)</td>
+                <td>Routing engine, Eloquent ORM, Service Container, CSRF Protection, dan Middleware pipeline.</td>
+            </tr>
+            <tr>
+                <td><strong>Database Engine</strong></td>
+                <td>MySQL 8.0+ / MariaDB</td>
+                <td>Storage transaksional dengan Foreign Key cascading, indeks unik untuk QR code tokens, dan InnoDB engine.</td>
+            </tr>
+            <tr>
+                <td><strong>Authentication & RBAC</strong></td>
+                <td>Laravel Fortify (Custom RBAC)</td>
+                <td>Sesi autentikasi aman, Password Hashing Bcrypt (rounds=12), rate limiting, dan role enforcement.</td>
+            </tr>
+            <tr>
+                <td><strong>Image Processing</strong></td>
+                <td>Native PHP GD Extension</td>
+                <td>MIME type validation, dynamic downscaling (max 1600px), dan JPEG quality compression (75%).</td>
+            </tr>
+            <tr>
+                <td><strong>Session Driver</strong></td>
+                <td><code>SESSION_DRIVER=file</code></td>
+                <td>Penyimpanan sesi berbasis file lokal untuk mencegah bottleneck MySQL <em>"Too Many Connections (1040)"</em> pada remote hosting.</td>
+            </tr>
+            <tr>
+                <td><strong>Frontend Layer</strong></td>
+                <td>Blade, Vanilla JS, CSS Grid/Flexbox</td>
+                <td>Desain responsif mobile-first, modal orchestration tanpa dependency jQuery/Bootstrap/React.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- SEKSI 2: SKEMA BASIS DATA -->
+    <div class="page-break"></div>
+    <h2><span class="sec-num">02</span> Skema Database & Relasi Antar Tabel (ERD)</h2>
+    <p>Database terdiri dari tabel inti yang saling berelasi secara integritas referensial (FK constraints):</p>
+
+    <h3>1. Tabel `users` (Pengguna & Hak Akses)</h3>
+    <pre>
+<span class="keyword">CREATE TABLE</span> `users` (
+  `id` <span class="type">BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY</span>,
+  `name` <span class="type">VARCHAR(255) NOT NULL</span>,
+  `email` <span class="type">VARCHAR(255) UNIQUE NOT NULL</span>,
+  `password` <span class="type">VARCHAR(255) NOT NULL</span>,         <span class="comment">-- Bcrypt hash</span>
+  `plain_password` <span class="type">VARCHAR(255) NULL</span>,          <span class="comment">-- Plaintext tracking untuk Super Admin</span>
+  `role` <span class="type">ENUM('super_admin','admin','user') DEFAULT 'user'</span>,
+  `remember_token` <span class="type">VARCHAR(100) NULL</span>,
+  `created_at` <span class="type">TIMESTAMP NULL</span>,
+  `updated_at` <span class="type">TIMESTAMP NULL</span>
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    </pre>
+
+    <h3>2. Tabel `assets` (Master Data Inventaris)</h3>
+    <pre>
+<span class="keyword">CREATE TABLE</span> `assets` (
+  `id` <span class="type">BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY</span>,
+  `asset_code` <span class="type">VARCHAR(100) UNIQUE NOT NULL</span>,   <span class="comment">-- Contoh: IRGT-PC-001</span>
+  `name` <span class="type">VARCHAR(255) NOT NULL</span>,
+  `category` <span class="type">VARCHAR(100) NOT NULL</span>,           <span class="comment">-- Laptop, PC, Proyektor, dll</span>
+  `brand` <span class="type">VARCHAR(100) NULL</span>,
+  `model` <span class="type">VARCHAR(100) NULL</span>,
+  `serial_number` <span class="type">VARCHAR(150) NULL</span>,
+  `location` <span class="type">VARCHAR(255) NOT NULL</span>,          <span class="comment">-- Ruang Guru, Lab Komputer, dll</span>
+  `status` <span class="type">ENUM('active','maintenance','damaged','disposed') DEFAULT 'active'</span>,
+  `condition` <span class="type">ENUM('good','fair','damaged') DEFAULT 'good'</span>,
+  `purchase_date` <span class="type">DATE NULL</span>,
+  `purchase_cost` <span class="type">DECIMAL(15,2) NULL</span>,
+  `vendor` <span class="type">VARCHAR(255) NULL</span>,
+  `warranty_expiry` <span class="type">DATE NULL</span>,
+  `ownership` <span class="type">VARCHAR(150) DEFAULT 'IRGT School'</span>,
+  `scan_token` <span class="type">VARCHAR(64) UNIQUE NOT NULL</span>,    <span class="comment">-- Token acak aman untuk URL scan publik</span>
+  `notes` <span class="type">TEXT NULL</span>,
+  `created_at` <span class="type">TIMESTAMP NULL</span>,
+  `updated_at` <span class="type">TIMESTAMP NULL</span>
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    </pre>
+
+    <h3>3. Tabel `maintenance_reports` (Tiket Pelaporan & Maintenance)</h3>
+    <pre>
+<span class="keyword">CREATE TABLE</span> `maintenance_reports` (
+  `id` <span class="type">BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY</span>,
+  `report_number` <span class="type">VARCHAR(50) UNIQUE NOT NULL</span>, <span class="comment">-- Format: REP-202608-XXXX</span>
+  `asset_id` <span class="type">BIGINT UNSIGNED NULL</span>,
+  `user_id` <span class="type">BIGINT UNSIGNED NOT NULL</span>,
+  `reporter_name` <span class="type">VARCHAR(255) NOT NULL</span>,
+  `reporter_email` <span class="type">VARCHAR(255) NOT NULL</span>,
+  `location` <span class="type">VARCHAR(255) NOT NULL</span>,
+  `issue_description` <span class="type">TEXT NOT NULL</span>,
+  `priority` <span class="type">ENUM('low','medium','high','urgent') DEFAULT 'medium'</span>,
+  `status` <span class="type">ENUM('pending','in_progress','resolved','rejected') DEFAULT 'pending'</span>,
+  `photo_path` <span class="type">VARCHAR(255) NULL</span>,
+  `handled_by` <span class="type">BIGINT UNSIGNED NULL</span>,
+  `resolution_notes` <span class="type">TEXT NULL</span>,
+  `resolved_at` <span class="type">TIMESTAMP NULL</span>,
+  `created_at` <span class="type">TIMESTAMP NULL</span>,
+  `updated_at` <span class="type">TIMESTAMP NULL</span>,
+  <span class="keyword">FOREIGN KEY</span> (`asset_id`) <span class="keyword">REFERENCES</span> `assets`(`id`) <span class="keyword">ON DELETE SET NULL</span>,
+  <span class="keyword">FOREIGN KEY</span> (`user_id`) <span class="keyword">REFERENCES</span> `users`(`id`) <span class="keyword">ON DELETE CASCADE</span>,
+  <span class="keyword">FOREIGN KEY</span> (`handled_by`) <span class="keyword">REFERENCES</span> `users`(`id`) <span class="keyword">ON DELETE SET NULL</span>
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    </pre>
+
+    <h3>4. Tabel `asset_histories` (Audit Trail & Kronologi Aset)</h3>
+    <pre>
+<span class="keyword">CREATE TABLE</span> `asset_histories` (
+  `id` <span class="type">BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY</span>,
+  `asset_id` <span class="type">BIGINT UNSIGNED NOT NULL</span>,
+  `action_type` <span class="type">VARCHAR(50) NOT NULL</span>,          <span class="comment">-- created, updated, maintenance, repaired</span>
+  `description` <span class="type">TEXT NOT NULL</span>,
+  `performed_by` <span class="type">VARCHAR(255) NOT NULL</span>,        <span class="comment">-- Nama user / teknisi</span>
+  `created_at` <span class="type">TIMESTAMP NULL</span>,
+  <span class="keyword">FOREIGN KEY</span> (`asset_id`) <span class="keyword">REFERENCES</span> `assets`(`id`) <span class="keyword">ON DELETE CASCADE</span>
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    </pre>
+
+    <!-- SEKSI 3: ROUTING & RBAC MIDDLEWARE -->
+    <div class="page-break"></div>
+    <h2><span class="sec-num">03</span> Matriks Routing & Middleware Security Guard</h2>
+    <p>Setiap endpoint HTTP dilindungi oleh hierarki middleware ketat. Manipulasi di frontend akan selalu terhalang oleh verifikasi sesi di level kernel PHP:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Metode</th>
+                <th>URI Endpoint</th>
+                <th>Controller & Action</th>
+                <th>Middleware Guard</th>
+                <th>Hak Akses</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="badge-method m-get">GET</span></td>
+                <td><code>/assets</code></td>
+                <td><code>AssetController@index</code></td>
+                <td><code>auth, role:super_admin,admin</code></td>
+                <td>Admin, Super Admin</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-post">POST</span></td>
+                <td><code>/assets</code></td>
+                <td><code>AssetController@store</code></td>
+                <td><code>auth, role:super_admin,admin</code></td>
+                <td>Admin, Super Admin</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-patch">PATCH</span></td>
+                <td><code>/assets/{asset}</code></td>
+                <td><code>AssetController@update</code></td>
+                <td><code>auth, role:super_admin,admin</code></td>
+                <td>Admin, Super Admin</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-delete">DELETE</span></td>
+                <td><code>/assets/{asset}</code></td>
+                <td><code>AssetController@destroy</code></td>
+                <td><code>auth, role:super_admin</code></td>
+                <td>Khusus Super Admin</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-get">GET</span></td>
+                <td><code>/reports</code></td>
+                <td><code>MaintenanceReportController@index</code></td>
+                <td><code>auth</code> (Adaptive query)</td>
+                <td>Semua User (Filter Role)</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-post">POST</span></td>
+                <td><code>/reports</code></td>
+                <td><code>MaintenanceReportController@store</code></td>
+                <td><code>auth</code></td>
+                <td>Semua User Terdaftar</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-patch">PATCH</span></td>
+                <td><code>/reports/{report}/status</code></td>
+                <td><code>MaintenanceReportController@updateStatus</code></td>
+                <td><code>auth, role:super_admin,admin</code></td>
+                <td>Admin, Super Admin</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-get">GET</span></td>
+                <td><code>/users</code></td>
+                <td><code>UserController@index</code></td>
+                <td><code>auth, role:super_admin</code></td>
+                <td>Khusus Super Admin</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-patch">PATCH</span></td>
+                <td><code>/users/{user}/role</code></td>
+                <td><code>UserController@updateRole</code></td>
+                <td><code>auth, role:super_admin</code></td>
+                <td>Khusus Super Admin</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-patch">PATCH</span></td>
+                <td><code>/users/{user}/password</code></td>
+                <td><code>UserController@updatePassword</code></td>
+                <td><code>auth, role:super_admin</code></td>
+                <td>Khusus Super Admin</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-patch">PATCH</span></td>
+                <td><code>/users/{user}/reset-password</code></td>
+                <td><code>UserController@resetPassword</code></td>
+                <td><code>auth, role:super_admin</code></td>
+                <td>Khusus Super Admin</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-get">GET</span></td>
+                <td><code>/public-assets</code></td>
+                <td><code>PublicAssetController@index</code></td>
+                <td><code>Public / Guest</code></td>
+                <td>Semua Pengunjung Web</td>
+            </tr>
+            <tr>
+                <td><span class="badge-method m-get">GET</span></td>
+                <td><code>/asset/scan/{token}</code></td>
+                <td><code>PublicAssetController@scan</code></td>
+                <td><code>Public / Guest</code></td>
+                <td>Semua Pengunjung Web</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- SEKSI 4: STATE MACHINE MAINTENANCE -->
+    <div class="page-break"></div>
+    <h2><span class="sec-num">04</span> State Machine Siklus Laporan & Sinkronisasi Aset</h2>
+    <p>Ketika tiket laporan maintenance diubah statusnya oleh petugas IT, controller secara otomatis menjalankan transaksi ganda pada tabel <code>maintenance_reports</code>, tabel <code>assets</code>, dan tabel <code>asset_histories</code>:</p>
+
+    <pre>
+<span class="comment">// MaintenanceReportController.php: updateStatus()</span>
+<span class="keyword">switch</span> (<span class="var">$newStatus</span>) {
+    <span class="keyword">case</span> <span class="string">'in_progress'</span>:
+        <span class="var">$report</span>->update([
+            <span class="string">'status'</span> => <span class="string">'in_progress'</span>,
+            <span class="string">'handled_by'</span> => auth()->id(),
+        ]);
+        <span class="comment">// Aset otomatis diubah ke status 'maintenance'</span>
+        <span class="var">$report</span>->asset?->update([<span class="string">'status'</span> => <span class="string">'maintenance'</span>]);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string">'resolved'</span>:
+        <span class="var">$report</span>->update([
+            <span class="string">'status'</span> => <span class="string">'resolved'</span>,
+            <span class="string">'handled_by'</span> => auth()->id(),
+            <span class="string">'resolved_at'</span> => now(),
+            <span class="string">'resolution_notes'</span> => <span class="var">$request</span>->resolution_notes,
+        ]);
+        <span class="comment">// Aset otomatis dikembalikan ke status 'active' & 'good'</span>
+        <span class="var">$report</span>->asset?->update([
+            <span class="string">'status'</span> => <span class="string">'active'</span>,
+            <span class="string">'condition'</span> => <span class="string">'good'</span>
+        ]);
+        <span class="comment">// Audit trail tersimpan ke riwayat aset</span>
+        <span class="var">$report</span>->asset?->histories()->create([
+            <span class="string">'action_type'</span> => <span class="string">'repaired'</span>,
+            <span class="string">'description'</span> => <span class="string">"Perbaikan selesai oleh "</span> . auth()->user()->name . <span class="string">": {$request->resolution_notes}"</span>,
+            <span class="string">'performed_by'</span> => auth()->user()->name,
+        ]);
+        <span class="keyword">break</span>;
+}
+    </pre>
+
+    <!-- SEKSI 5: PIPELINE PEMROSESAN GAMBAR -->
+    <h2><span class="sec-num">05</span> Pipeline Pemrosesan & Kompresi Gambar (GD)</h2>
+    <p>Untuk menghemat kuota hosting dan mencegah eksploitasi file webshell berkedok gambar, upload foto melewati pipeline pembersihan dan kompresi native GD:</p>
+
+    <pre>
+<span class="comment">/**
+ * Pipeline Kompresi & Resize Otomatis via PHP GD
+ */</span>
+<span class="keyword">private function</span> compressAndStoreImage(<span class="var">$file</span>): <span class="type">string</span>
+{
+    <span class="var">$extension</span> = strtolower(<span class="var">$file</span>->getClientOriginalExtension());
+    <span class="var">$sourcePath</span> = <span class="var">$file</span>->getRealPath();
+
+    <span class="comment">// 1. Baca gambar asli sesuai format MIME</span>
+    <span class="var">$image</span> = <span class="keyword">match</span> (<span class="var">$extension</span>) {
+        <span class="string">'png'</span>  => imagecreatefrompng(<span class="var">$sourcePath</span>),
+        <span class="keyword">default</span> => imagecreatefromjpeg(<span class="var">$sourcePath</span>),
+    };
+
+    <span class="comment">// 2. Hitung dimensi proporsional (Maksimal Lebar/Tinggi 1600px)</span>
+    <span class="var">$maxDim</span> = 1600;
+    <span class="keyword">if</span> (<span class="var">$origW</span> > <span class="var">$maxDim</span> || <span class="var">$origH</span> > <span class="var">$maxDim</span>) {
+        <span class="var">$ratio</span> = min(<span class="var">$maxDim</span> / <span class="var">$origW</span>, <span class="var">$maxDim</span> / <span class="var">$origH</span>);
+        <span class="var">$newW</span> = (int) round(<span class="var">$origW</span> * <span class="var">$ratio</span>);
+        <span class="var">$newH</span> = (int) round(<span class="var">$origH</span> * <span class="var">$ratio</span>);
+        <span class="var">$canvas</span> = imagecreatetruecolor(<span class="var">$newW</span>, <span class="var">$newH</span>);
+        imagecopyresampled(<span class="var">$canvas</span>, <span class="var">$image</span>, 0, 0, 0, 0, <span class="var">$newW</span>, <span class="var">$newH</span>, <span class="var">$origW</span>, <span class="var">$origH</span>);
+        <span class="var">$image</span> = <span class="var">$canvas</span>;
+    }
+
+    <span class="comment">// 3. Simpan sebagai file JPEG bersih terkompresi (Quality 75%)</span>
+    <span class="var">$filename</span> = <span class="string">'report_'</span> . time() . <span class="string">'_'</span> . Str::random(8) . <span class="string">'.jpg'</span>;
+    imagejpeg(<span class="var">$image</span>, storage_path(<span class="string">'app/public/reports/'</span> . <span class="var">$filename</span>), 75);
+    imagedestroy(<span class="var">$image</span>);
+
+    <span class="keyword">return</span> <span class="string">'reports/'</span> . <span class="var">$filename</span>;
+}
+    </pre>
+
+    <!-- SEKSI 6: PANDUAN DEPLOYMENT CPANEL -->
+    <div class="page-break"></div>
+    <h2><span class="sec-num">06</span> Panduan Deployment & Konfigurasi Server (cPanel / Apache)</h2>
+
+    <h3>1. Pemisahan Folder Produksi</h3>
+    <pre>
+/home/username/
+├── inventori-irgt/           <span class="comment">&lt;-- Folder Utama Aplikasi (DI LUAR public_html)</span>
+│   ├── app/
+│   ├── config/
+│   ├── database/
+│   ├── routes/
+│   ├── storage/
+│   └── .env                 <span class="comment">&lt;-- Aman dari akses URL publik</span>
+└── public_html/              <span class="comment">&lt;-- Document Root Domain (HANYA isi folder public/)</span>
+    ├── index.php             <span class="comment">&lt;-- Require ../inventori-irgt/bootstrap/app.php</span>
+    ├── images/               <span class="comment">&lt;-- Letakkan logo.png di sini</span>
+    ├── .htaccess             <span class="comment">&lt;-- Aturan keamanan & rewrite</span>
+    └── storage -> /home/.../storage/app/public
+    </pre>
+
+    <h3>2. Konfigurasi Kritis `.env` Produksi</h3>
+    <pre>
+<span class="var">APP_NAME</span>=<span class="string">"IRGT INVENTORY"</span>
+<span class="var">APP_ENV</span>=<span class="string">production</span>
+<span class="var">APP_DEBUG</span>=<span class="string">false</span>                 <span class="comment"># WAJIB FALSE agar tidak membocorkan baris kode</span>
+<span class="var">APP_URL</span>=<span class="string">https://domainsekolah.sch.id</span>
+
+<span class="comment"># Driver Penyimpanan (Mencegah Kehabisan Koneksi MySQL Remote)</span>
+<span class="var">SESSION_DRIVER</span>=<span class="string">file</span>
+<span class="var">SESSION_LIFETIME</span>=120
+<span class="var">CACHE_STORE</span>=<span class="string">file</span>
+<span class="var">QUEUE_CONNECTION</span>=<span class="string">sync</span>
+
+<span class="comment"># Konfigurasi Database</span>
+<span class="var">DB_CONNECTION</span>=<span class="string">mysql</span>
+<span class="var">DB_HOST</span>=127.0.0.1
+<span class="var">DB_PORT</span>=3306
+<span class="var">DB_DATABASE</span>=<span class="string">nama_db</span>
+<span class="var">DB_USERNAME</span>=<span class="string">user_db</span>
+<span class="var">DB_PASSWORD</span>=<span class="string">password_db</span>
+    </pre>
+
+    <h3>3. Checklist Pemeliharaan & Perintah Artisan Penting</h3>
+    <div class="callout callout-info">
+        <strong>Perintah Maintenance Terjadwal:</strong>
+        <ul style="margin-top:6px; margin-bottom:0;">
+            <li><code>php artisan optimize:clear</code> — Membersihkan cache view, route, dan config.</li>
+            <li><code>php artisan config:cache && php artisan route:cache && php artisan view:cache</code> — Mengompilasi cache untuk performa maksimal di hosting.</li>
+            <li><code>php artisan storage:link</code> — Menghubungkan folder upload gambar ke public storage.</li>
+        </ul>
+    </div>
+
+    <!-- PENUTUP -->
+    <div style="margin-top:30px; padding-top:16px; border-top:1.5px solid #cbd5e1; text-align:center; font-size:11.5px; color:#64748b; font-family:'JetBrains Mono',monospace;">
+        END OF TECHNICAL SPECIFICATION &bull; IRGT SCHOOL IT INFRASTRUCTURE &bull; 2026
+    </div>
+
+</div>
+
+</body>
+</html>

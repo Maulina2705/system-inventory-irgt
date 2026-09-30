@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Panduan Lengkap Sistem Inventaris Aset IT — IRGT School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 18mm 16mm 18mm 16mm;
+            @bottom-right {
+                content: "Halaman " counter(page);
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                font-size: 9pt;
+                color: #64748b;
+            }
+            @bottom-left {
+                content: "IRGT School — Buku Panduan Sistem Inventaris Aset IT";
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                font-size: 8.5pt;
+                color: #64748b;
+            }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+            line-height: 1.65;
+            font-size: 13.5px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .print-btn-bar {
+            background: #0c1a2e;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .print-btn-bar .title { color: #fff; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .btn-print-doc {
+            background: linear-gradient(135deg, #0ea5e9, #0369a1);
+            color: #fff;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            box-shadow: 0 3px 10px rgba(3,105,161,0.4);
+            transition: all 0.15s;
+        }
+        .btn-print-doc:hover { background: #0284c7; transform: translateY(-1px); }
+
+        .doc-container {
+            max-width: 860px;
+            margin: 28px auto 60px;
+            background: #ffffff;
+            padding: 48px 56px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* COVER */
+        .cover {
+            text-align: center;
+            padding: 40px 20px 48px;
+            border-bottom: 2.5px solid #e0f2fe;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .cover-badge {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+        .cover h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0c1a2e;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+        .cover p {
+            font-size: 14px;
+            color: #475569;
+            max-width: 620px;
+            margin: 0 auto 20px;
+        }
+        .cover-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 11.5px;
+            color: #64748b;
+            font-weight: 600;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 14px;
+            margin-top: 16px;
+        }
+
+        /* TYPOGRAPHY */
+        h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0c1a2e;
+            margin: 36px 0 14px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0f2fe;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            page-break-after: avoid;
+        }
+        h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0369a1;
+            margin: 22px 0 10px;
+            page-break-after: avoid;
+        }
+        h4 {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 14px 0 6px;
+        }
+        p { margin-bottom: 12px; color: #334155; }
+        ul, ol { margin-left: 20px; margin-bottom: 14px; color: #334155; }
+        li { margin-bottom: 6px; }
+
+        /* CARDS & CALLOUTS */
+        .callout {
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin: 16px 0;
+            font-size: 12.5px;
+            line-height: 1.6;
+            border-left: 4px solid;
+            page-break-inside: avoid;
+        }
+        .callout-info { background: #f0f9ff; border-color: #0ea5e9; color: #0369a1; }
+        .callout-success { background: #f0fdf4; border-color: #22c55e; color: #15803d; }
+        .callout-warning { background: #fffbeb; border-color: #f59e0b; color: #b45309; }
+        .callout-danger { background: #fef2f2; border-color: #ef4444; color: #b91c1c; }
+        .callout strong { font-weight: 700; }
+
+        /* TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 20px;
+            font-size: 12px;
+            page-break-inside: avoid;
+        }
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #f0f9ff;
+            color: #0369a1;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.04em;
+        }
+        tr:nth-child(even) { background: #f8fafc; }
+
+        /* BADGES */
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10.5px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .badge-super { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .badge-admin { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .badge-user { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+        .step-box {
+            display: flex;
+            gap: 14px;
+            margin: 14px 0;
+            padding: 12px 16px;
+            background: #fff;
+            border: 1.5px solid #e0f2fe;
+            border-radius: 10px;
+            page-break-inside: avoid;
+        }
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9, #0369a1);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .step-content h4 { margin-top: 2px; margin-bottom: 3px; font-size: 13px; color: #0c1a2e; }
+        .step-content p { font-size: 12px; margin-bottom: 0; color: #64748b; }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 14px 0;
+            page-break-inside: avoid;
+        }
+        .feature-card {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+        .feature-card h4 { color: #0369a1; margin-bottom: 4px; font-size: 13px; }
+        .feature-card p { font-size: 12px; margin-bottom: 0; color: #64748b; }
+
+        .code-box {
+            background: #0c1a2e;
+            color: #e0f2fe;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .page-break { page-break-before: always; }
+
+        @media print {
+            body { background: #fff; font-size: 11.5pt; line-height: 1.55; }
+            .print-btn-bar { display: none; }
+            .doc-container { box-shadow: none; border: none; padding: 0; margin: 0; max-width: 100%; }
+            h2 { margin-top: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="print-btn-bar">
+    <div class="title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        Buku Panduan Sistem Inventaris IRGT School
+    </div>
+    <button class="btn-print-doc" onclick="window.print()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Cetak / Simpan sebagai PDF
+    </button>
+</div>
+
+<div class="doc-container">
+
+    <!-- COVER -->
+    <div class="cover">
+        <div class="cover-badge">Dokumentasi & Manual Resmi</div>
+        <h1>BUKU PANDUAN PENGGUNAAN<br>SISTEM INVENTARIS ASET IT</h1>
+        <p>Pedoman komprehensif pengelolaan siklus hidup perangkat, tiket pelaporan maintenance, pemindaian label QR Code, serta kontrol akses kredensial pengguna terpusat di lingkungan IRGT School.</p>
+        <div class="cover-meta">
+            <div>Instansi: <strong>IRGT School</strong></div>
+            <div>Departemen: <strong>Tim IT Infrastructure</strong></div>
+            <div>Versi: <strong>1.0 (Production)</strong></div>
+            <div>Tahun: <strong>{{ date('Y') }}</strong></div>
+        </div>
+    </div>
+
+    <!-- BAB 1 -->
+    <h2>1. Pengenalan & Struktur Wewenang (Role Akun)</h2>
+    <p>Sistem Inventaris IRGT dirancang untuk mencatat seluruh perangkat teknologi (Laptop, PC, Proyektor, Router, Printer, dll.), memfasilitasi pelaporan kendala secara cepat oleh guru/staf, dan mengelola alur kerja perbaikan oleh teknisi IT.</p>
+
+    <h3>Tiga Tingkat Wewenang (Role-Based Access Control)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:20%;">Role</th>
+                <th style="width:30%;">Hak Akses Utama</th>
+                <th style="width:50%;">Fungsi & Tanggung Jawab</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="badge badge-super">SUPER ADMIN</span></td>
+                <td>Akses Penuh (Full Access)</td>
+                <td>Mengelola seluruh master data inventaris, mengelola wewenang akun user, melihat/mengubah password pengguna, melakukan reset password default, serta menghapus data.</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-admin">ADMIN (IT)</span></td>
+                <td>Petugas / Teknisi IT</td>
+                <td>Menginput aset baru, mengubah status perangkat, mencetak QR Code, dan memproses laporan maintenance (*In Progress* & *Resolved*).</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-user">USER (PELAPOR)</span></td>
+                <td>Guru, Karyawan, Siswa</td>
+                <td>Mengajukan laporan kendala perangkat (disertai foto bukti) dan memantau status pengerjaan tiket miliknya secara *real-time*. Tidak dapat mengedit data inventaris internal.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout callout-info">
+        <strong>Catatan Kebijakan Akun Baru:</strong> Setiap pengguna yang mendaftar melalui halaman registrasi otomatis mendapatkan role <strong>User (Pelapor)</strong>. Jika pengguna tersebut adalah staf IT, Super Admin dapat menaikkan wewenangnya menjadi <strong>Admin (IT)</strong> di menu Kelola Pengguna.
+    </div>
+
+    <!-- BAB 2 -->
+    <div class="page-break"></div>
+    <h2>2. Rincian & Fungsi Masing-Masing Tab Halaman</h2>
+
+    <h3>A. Tab "Daftar Inventaris" (`/assets`) — Khusus Admin & Super Admin</h3>
+    <p>Merupakan dashboard utama pusat data perangkat sekolah dengan kapabilitas:</p>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h4>Pencarian & Multi-Filter</h4>
+            <p>Memfilter data berdasarkan kata kunci nama/kode aset, penempatan ruangan, kategori unit, kondisi fisik, dan status operasional.</p>
+        </div>
+        <div class="feature-card">
+            <h4>Modal Preview QR Code</h4>
+            <p>Klik tombol QR Code pada baris aset untuk melihat kode visual, mencetak langsung label stiker, atau mengunduh file gambar PNG.</p>
+        </div>
+        <div class="feature-card">
+            <h4>Audit History Cepat</h4>
+            <p>Tombol riwayat untuk melacak kronologi lengkap perbaikan dan perpindahan perangkat dari awal didaftarkan.</p>
+        </div>
+        <div class="feature-card">
+            <h4>Cetak Massal (Print Label)</h4>
+            <p>Fitur cetak label stiker inventaris berstandar barcode scanner untuk ditempelkan pada bodi fisik perangkat.</p>
+        </div>
+    </div>
+
+    <h3>B. Tab "Tambah Data Inventaris" (`/assets/create`) — Khusus Admin & Super Admin</h3>
+    <p>Formulir pendaftaran unit baru ke dalam database:</p>
+    <ul>
+        <li><strong>Kode Aset Unik:</strong> Format penomoran otomatis terstandarisasi (misal: <code>IRGT-LAB-PC-001</code>).</li>
+        <li><strong>Spesifikasi & Serial Number:</strong> Merek, tipe model, prosesor, RAM, penyimpanan, dan nomor seri pabrikan.</li>
+        <li><strong>Lokasi & Penempatan:</strong> Menentukan gedung, ruangan kelas, laboratorium, atau nama guru/penanggung jawab unit.</li>
+        <li><strong>Kondisi Awal:</strong> Pilihan kondisi (<em>Baik / Good</em>, <em>Cukup / Fair</em>, <em>Rusak / Damaged</em>).</li>
+    </ul>
+
+    <h3>C. Tab "Laporan Maintenance" (`/reports`) — Tersedia untuk Semua User</h3>
+    <p>Pusat antrean tiket kendala dan perbaikan perangkat. Tampilan menyesuaikan wewenang akun:</p>
+    
+    <div class="step-box">
+        <div class="step-num">1</div>
+        <div class="step-content">
+            <h4>Pengajuan Laporan oleh User (Guru / Staf)</h4>
+            <p>User memilih aset bermasalah (atau memindai QR pada bodi perangkat), menuliskan gejala kerusakan, dan melampirkan foto bukti (PNG / JPG). Foto akan otomatis dikompresi oleh sistem.</p>
+        </div>
+    </div>
+    <div class="step-box">
+        <div class="step-num">2</div>
+        <div class="step-content">
+            <h4>Penerimaan & Tindakan Teknisi IT</h4>
+            <p>Petugas IT mengubah status tiket menjadi <strong>IN PROGRESS (Sedang Dikerjakan)</strong>. Status aset di sistem otomatis berubah menjadi <strong>MAINTENANCE</strong>.</p>
+        </div>
+    </div>
+    <div class="step-box">
+        <div class="step-num">3</div>
+        <div class="step-content">
+            <h4>Penyelesaian Tiket & Audit Trail Otomatis</h4>
+            <p>Setelah selesai diservis, teknisi mengklik <strong>RESOLVED (Selesai)</strong> serta mengisi catatan tindakan. Status aset otomatis kembali <strong>ACTIVE</strong>, dan histori tersimpan abadi beserta nama teknisi dan timestamp.</p>
+        </div>
+    </div>
+
+    <!-- BAB 3 -->
+    <div class="page-break"></div>
+    <h2>3. Panduan Menu "Kelola Pengguna" (`/users`) — Khusus Super Admin</h2>
+    <p>Menu sentral bagi Super Admin untuk mengatur seluruh akun, wewenang, dan kredensial sistem:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:25%;">Fitur</th>
+                <th style="width:35%;">Tampilan & Tombol</th>
+                <th style="width:40%;">Deskripsi Penggunaan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Lihat Password User</strong></td>
+                <td>Ikon Mata (`Show/Hide`) + Salin</td>
+                <td>Super Admin dapat membuka samaran password pengguna lain untuk keperluan verifikasi atau bantuan login langsung.</td>
+            </tr>
+            <tr>
+                <td><strong>Ubah Password Kustom</strong></td>
+                <td>Tombol Biru `Ubah Password`</td>
+                <td>Membuka pop-up modal untuk memasukkan password baru pilihan, dilengkapi tombol acak dan dialog konfirmasi <em>"Anda Yakin?"</em> sebelum disimpan.</td>
+            </tr>
+            <tr>
+                <td><strong>Reset Default (IRGTE165)</strong></td>
+                <td>Tombol Amber `Reset Default`</td>
+                <td>Mengembalikan kata sandi akun terpilih kembali ke standar awal: <code>IRGTE165</code> dengan notifikasi pop-up.</td>
+            </tr>
+            <tr>
+                <td><strong>Ubah Role Akun</strong></td>
+                <td>Dropdown Select + Tombol `Ubah`</td>
+                <td>Mengubah wewenang pengguna secara instan antara Super Admin, Admin IT, atau User Pelapor.</td>
+            </tr>
+            <tr>
+                <td><strong>Hapus Akun Pengguna</strong></td>
+                <td>Tombol Merah `Hapus`</td>
+                <td>Menghapus akun pengguna dari database (dilengkapi modal proteksi konfirmasi agar tidak terhapus tidak sengaja).</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- BAB 4 -->
+    <h2>4. Halaman Publik & Pemindaian QR Code</h2>
+    
+    <h3>A. Portal Inventaris Publik (`/public-assets`)</h3>
+    <p>Halaman transparan yang dapat diakses oleh siapa saja tanpa perlu login, menyajikan ringkasan jumlah total aset sekolah, status unit yang aktif, serta perangkat yang sedang dalam masa perawatan.</p>
+
+    <h3>B. Scan QR Code via Kamera Handphone (`/asset/scan/{token}`)</h3>
+    <p>Ketika stiker QR Code pada bodi laptop/proyektor dipindai menggunakan kamera smartphone:</p>
+    <ul>
+        <li>Halaman detail aset publik akan langsung terbuka secara responsif.</li>
+        <li>Terdapat tombol cepat <strong>"Ajukan Laporan Kerusakan"</strong> yang langsung mengarahkan user ke form tiket dengan aset yang sudah otomatis terpilih.</li>
+    </ul>
+
+    <!-- BAB 5 -->
+    <div class="page-break"></div>
+    <h2>5. Keamanan Sistem & Panduan Pemeliharaan (Maintenance)</h2>
+
+    <h3>A. Arsitektur Keamanan yang Diterapkan</h3>
+    <ul>
+        <li><strong>Server-Side Role Guard:</strong> Seluruh rute sensitif diverifikasi langsung di server PHP via middleware. Manipulasi kode di browser (*Inspect Element*) otomatis ditolak dengan <code>HTTP 403 Forbidden</code>.</li>
+        <li><strong>Anti-Brute Force (Rate Limiting):</strong> Pembatasan percobaan login otomatis (maksimal 5x per menit) untuk mencegah pembobolan akun secara paksa.</li>
+        <li><strong>Anti-SQL Injection & Anti-XSS:</strong> 100% Prepared Statements (Eloquent ORM) dan escaping karakter Blade <code>{{ }}</code>.</li>
+        <li><strong>Penyembunyian File Sensitif:</strong> File <code>.env</code>, database SQL, log, dan source code diblokir total dari akses web melalui aturan <code>.htaccess</code>.</li>
+    </ul>
+
+    <h3>B. Cara Mengganti Logo Sekolah pada Navbar</h3>
+    <p>Sistem telah dilengkapi pendeteksi logo otomatis. Anda cukup meletakkan file logo sekolah ke folder berikut:</p>
+    <div class="code-box">
+        Lokasi File: public/images/logo.png  (atau public_html/images/logo.png)<br>
+        Format yang Didukung: PNG, JPG, JPEG, atau SVG
+    </div>
+    <p>Setelah file ditaruh, logo sekolah akan otomatis menggantikan ikon default di pojok kiri atas seluruh halaman.</p>
+
+    <h3>C. Kredensial Standar Sistem</h3>
+    <div class="callout callout-warning">
+        <strong>Informasi Default Akun Administrator:</strong><br>
+        • Email Super Admin: <code>it@zigge.my.id</code><br>
+        • Password Default: <code>IRGTE165</code><br>
+        • Persyaratan Password Baru: Minimal 8 karakter (huruf/angka fleksibel, tanpa wajib simbol).
+    </div>
+
+    <!-- PENUTUP -->
+    <div style="margin-top:40px; padding-top:20px; border-top:2px solid #e0f2fe; text-align:center; font-size:12px; color:#64748b;">
+        &copy; {{ date('Y') }} IRGT School — Sistem Inventaris Aset IT.<br>
+        Dokumen ini diterbitkan secara resmi sebagai panduan operasional tim internal dan pengguna.
+    </div>
+
+</div>
+
+</body>
+</html>
